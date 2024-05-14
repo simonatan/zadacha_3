@@ -2,6 +2,7 @@ package com.company;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Scanner;
@@ -85,9 +86,27 @@ public class Main {
         t2.start();
         t3.start();
 
-        for(int i = 0; i < 10; i++) {
-            Product p = queue.remove();
-            System.out.println(p.getName() + " " + p.getPrice());
+        File write = new File("output_Apartments.txt");
+        if (write.exists()) {
+            System.out.println("File already exists.");
+            System.exit(1);
         }
+        PrintWriter output = null;
+
+        try {
+            output = new PrintWriter(write);
+
+            for(int i = 0; i < 10; i++) {
+                Product p = queue.remove();
+                output.println(p.getName() + " " + p.getPrice());
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }finally {
+            assert output != null;
+            output.close();
+        }
+
+
     }
 }
