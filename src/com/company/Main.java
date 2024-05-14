@@ -13,7 +13,7 @@ public class Main {
         Queue<Product> queue = new PriorityQueue<>();
 
         Thread t1 = new Thread(()->{
-            File read = new File("guess.txt");
+            File read = new File("calvin_klein.txt");
             Scanner input = null;
 
             try {
@@ -59,7 +59,7 @@ public class Main {
         });
 
         Thread t3 = new Thread(() -> {
-            File read = new File("guess.txt");
+            File read = new File("trussardi.txt");
             Scanner input = null;
 
             try {
