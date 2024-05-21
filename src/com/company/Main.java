@@ -53,8 +53,8 @@ public class Main {
         }
 
         assert output != null;
-        for(Product p : polledElements) {
-            output.println(p + " ");
+        for(int i = 0; i < 10; i++) {
+            output.println(polledElements.get(i) + " ");
         }
         output.close();
     }
