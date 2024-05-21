@@ -52,6 +52,7 @@ public class Main {
             e.printStackTrace();
         }
 
+        assert output != null;
         for(Product p : polledElements) {
             output.println(p + " ");
         }
