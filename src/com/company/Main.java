@@ -35,23 +35,26 @@ public class Main {
             System.exit(1);
         }
 
+        ArrayList<Product> polledElements = new ArrayList<>();
+        products.drainTo(polledElements);
 
-
-        File write = new File("output_Apartments.txt");
-        if (write.exists()) {
+        File file = new File("result_products.txt");
+        if (file.exists()) {
             System.out.println("File already exists.");
             System.exit(1);
         }
         PrintWriter output = null;
 
         try {
-            output = new PrintWriter(write);
+            output = new PrintWriter(file);
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-        }finally {
-            assert output != null;
-            output.close();
         }
+
+        for(Product p : polledElements) {
+            output.println(p + " ");
+        }
+        output.close();
     }
 }
