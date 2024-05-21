@@ -1,16 +1,19 @@
 package com.company;
 
-public class Product implements Comparable<Product> {
+public class Product {
     private String name;
-    private String type;
+    private String category;
     private double price;
 
     public Product() {
+        this.name = "";
+        this.category = "";
+        this.price = 0;
     }
 
-    public Product(String name, String type, double price) {
+    public Product(String name, String category, double price) {
         this.name = name;
-        this.type = type;
+        this.category = category;
         this.price = price;
     }
 
@@ -22,12 +25,12 @@ public class Product implements Comparable<Product> {
         this.name = name;
     }
 
-    public String getType() {
-        return type;
+    public String getCategory() {
+        return category;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setCategory(String type) {
+        this.category = category;
     }
 
     public double getPrice() {
@@ -39,12 +42,7 @@ public class Product implements Comparable<Product> {
     }
 
     @Override
-    public int compareTo(Product o) {
-        if (this.price > o.price) {
-            return 1;
-        } else if (this.price < o.price) {
-            return -1;
-        }
-        return 0;
+    public String toString() {
+        return name + " " + category + " " + price;
     }
 }

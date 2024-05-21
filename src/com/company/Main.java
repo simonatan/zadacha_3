@@ -3,88 +3,39 @@ package com.company;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.util.PriorityQueue;
-import java.util.Queue;
-import java.util.Scanner;
+import java.util.*;
+import java.util.concurrent.PriorityBlockingQueue;
 
 public class Main {
 
     public static void main(String[] args) {
 
-        Queue<Product> queue = new PriorityQueue<>();
+        PriorityBlockingQueue<Product> products = new PriorityBlockingQueue<>(10, new ProductComparator());
 
-        Thread t1 = new Thread(()->{
-            File read = new File("calvin_klein.txt");
-            Scanner input = null;
+        try {
+            ProductThread t1 = new ProductThread("CalvinKleinThread", "calvin_klein.txt", products);
+            ProductThread t2 = new ProductThread("GuessThread", "guess.txt", products);
+            ProductThread t3 = new ProductThread("TrussardiThread", "trussardi.txt", products);
 
-            try {
-                input = new Scanner(read);
+            t1.start();
+            t2.start();
+            t3.start();
 
-                while (input.hasNext()) {
-                    String name = input.next();
-                    String type = input.next();
-                    double price = input.nextDouble();
+            List<Thread> threads = new ArrayList<>();
+            threads.add(t1);
+            threads.add(t2);
+            threads.add(t3);
 
-                    Product p = new Product(name, type, price);
-                    queue.add(p);
-                }
-            } catch (FileNotFoundException e) {
-                System.out.println(e.getMessage());
-            } finally {
-                assert input != null;
-                input.close();
+            for(Thread thread : threads) {
+                thread.join();
             }
-        });
 
-        Thread t2 = new Thread(()->{
-            File read = new File("guess.txt");
-            Scanner input = null;
+        } catch (Exception exception) {
+            System.out.println("There was an error while reading the data.");
+            System.exit(1);
+        }
 
-            try {
-                input = new Scanner(read);
 
-                while (input.hasNext()) {
-                    String name = input.next();
-                    String type = input.next();
-                    double price = input.nextDouble();
-
-                    Product p = new Product(name, type, price);
-                    queue.add(p);
-                }
-            } catch (FileNotFoundException e) {
-                System.out.println(e.getMessage());
-            } finally {
-                assert input != null;
-                input.close();
-            }
-        });
-
-        Thread t3 = new Thread(() -> {
-            File read = new File("trussardi.txt");
-            Scanner input = null;
-
-            try {
-                input = new Scanner(read);
-
-                while (input.hasNext()) {
-                    String name = input.next();
-                    String type = input.next();
-                    double price = input.nextDouble();
-
-                    Product p = new Product(name, type, price);
-                    queue.add(p);
-                }
-            } catch (FileNotFoundException e) {
-                System.out.println(e.getMessage());
-            } finally {
-                assert input != null;
-                input.close();
-            }
-        });
-
-        t1.start();
-        t2.start();
-        t3.start();
 
         File write = new File("output_Apartments.txt");
         if (write.exists()) {
@@ -96,17 +47,11 @@ public class Main {
         try {
             output = new PrintWriter(write);
 
-            for(int i = 0; i < 10; i++) {
-                Product p = queue.remove();
-                output.println(p.getName() + " " + p.getPrice());
-            }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }finally {
             assert output != null;
             output.close();
         }
-
-
     }
 }
